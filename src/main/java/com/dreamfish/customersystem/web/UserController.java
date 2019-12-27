@@ -1,5 +1,6 @@
 package com.dreamfish.customersystem.web;
 
+import com.dreamfish.customersystem.annotation.RequestAuth;
 import com.dreamfish.customersystem.services.UserService;
 import com.dreamfish.customersystem.utils.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    @RequestAuth
     @ResponseBody
     @GetMapping("/user/{userId}")
     public Result getUserInfo(@PathVariable("userId") Integer userId) {
