@@ -13,6 +13,7 @@ public enum ResultCodeEnum {
     NOT_FOUNT("404", "未找到指定资源"),
     UPLOAD_ERROR("461", "上传失败"),
     PASS_ERROR("462", "密码错误"),
+    USER_BANNED("463", "用户被封禁"),
     PARAMS_MISS("483", "缺少接口中必填参数"),
     PARAM_ERROR("484", "参数非法"),
     FAILED_DEL_OWN("485", "不能删除自己"),

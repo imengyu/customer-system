@@ -11,6 +11,6 @@ public interface UserMapper {
     List<User> findByUserCode(@Param("code") String code);
     @Update("UPDATE t_users SET state = #{state} FROM t_users WHERE code = #{code}")
     boolean updateUserStateByUserCode(@Param("state") boolean state, @Param("code") String code);
-    @Select("SELECT id,name,name,state,code,head_img FROM t_users WHERE id = #{id}")
+    @Select("SELECT id,name,state,code,head_img FROM t_users WHERE id = #{id}")
     User getUserById(@Param("id") int id);
 }

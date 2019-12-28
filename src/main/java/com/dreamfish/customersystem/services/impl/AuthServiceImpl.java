@@ -45,6 +45,8 @@ public class AuthServiceImpl implements AuthService {
 
         User userReal = users.get(0);
 
+        if(!userReal.getState() && userReal.getId() != 1)
+            return Result.failure(ResultCodeEnum.USER_BANNED);
         if(!userReal.getPassword().equals(AESUtils.encrypt(userPass + "$" + userCode, AUTH_KEY)))
             return Result.failure(ResultCodeEnum.PASS_ERROR);
 
