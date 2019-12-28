@@ -18,6 +18,7 @@ public class Customer {
     private Integer createId;
     private Integer source;
     private Integer industry;
+    @Transient
     private String industryName;
     private Integer level;
     private String linkman;

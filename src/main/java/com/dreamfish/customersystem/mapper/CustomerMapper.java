@@ -15,6 +15,9 @@ public interface CustomerMapper {
     @Select("SELECT t_customers.*,t_industry.name as industryName FROM t_customers,t_industry WHERE t_customers.id = #{id} AND t_industry.id = t_customers.industry")
     Customer getCustomerById(@Param("id")Integer id);
 
+    @Select("SELECT id FROM t_customers WHERE user_id = #{id}")
+    List<Customer> getCustomersByUserId(@Param("id")Integer id);
+
     @Select("SELECT * FROM t_industry WHERE 1 LIMIT 32")
     List<CustomerIndustry> getCustomerIndustry();
 
