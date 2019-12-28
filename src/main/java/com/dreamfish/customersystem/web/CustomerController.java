@@ -2,6 +2,7 @@ package com.dreamfish.customersystem.web;
 
 import com.dreamfish.customersystem.annotation.RequestAuth;
 import com.dreamfish.customersystem.entity.Customer;
+import com.dreamfish.customersystem.entity.CustomerIndustry;
 import com.dreamfish.customersystem.services.CustomerService;
 import com.dreamfish.customersystem.services.UserService;
 import com.dreamfish.customersystem.utils.Result;
@@ -27,15 +28,24 @@ public class CustomerController {
 
     @RequestAuth
     @ResponseBody
-    @GetMapping("/customer/{pageIndex}/{pageSize}")
-    public Result getCustomersPageable(@PathVariable("pageIndex") Integer pageIndex, @PathVariable("pageSize") Integer pageSize) {
-        return customerService.getCustomersPageable(pageIndex, pageSize);
+    @PostMapping("/customer/{pageIndex}/{pageSize}")
+    public Result getCustomersPageable(@PathVariable("pageIndex") Integer pageIndex,
+                                       @PathVariable("pageSize") Integer pageSize,
+                                       @RequestParam(name = "search", required = false, defaultValue = "false") Boolean search,
+                                       @RequestBody(required = false) Customer searchParam) {
+        return customerService.getCustomersPageable(pageIndex, pageSize, search, searchParam);
     }
     @RequestAuth
     @ResponseBody
     @GetMapping("/customer/industry")
     public Result getCustomerIndustry(){
         return customerService.getCustomerIndustry();
+    }
+    @RequestAuth
+    @ResponseBody
+    @PutMapping("/customer/industry")
+    public Result addCustomerIndustry(@RequestBody CustomerIndustry customerIndustry){
+        return customerService.addCustomerIndustry(customerIndustry);
     }
     @RequestAuth
     @ResponseBody

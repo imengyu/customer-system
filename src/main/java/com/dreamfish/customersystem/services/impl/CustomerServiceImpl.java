@@ -1,6 +1,7 @@
 package com.dreamfish.customersystem.services.impl;
 
 import com.dreamfish.customersystem.entity.Customer;
+import com.dreamfish.customersystem.entity.CustomerIndustry;
 import com.dreamfish.customersystem.mapper.CustomerMapper;
 import com.dreamfish.customersystem.repository.CustomerRepository;
 import com.dreamfish.customersystem.services.CustomerService;
@@ -8,12 +9,12 @@ import com.dreamfish.customersystem.utils.Result;
 import com.dreamfish.customersystem.utils.ResultCodeEnum;
 import com.dreamfish.customersystem.utils.auth.PublicAuth;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -27,14 +28,37 @@ public class CustomerServiceImpl implements CustomerService {
 
 
     @Override
-    public Result getCustomersPageable(Integer pageIndex, Integer pageSize) {
+    public Result getCustomersPageable(Integer pageIndex, Integer pageSize, Boolean search, Customer searchParam) {
         Pageable pageable = PageRequest.of(pageIndex, pageSize, Sort.by(Sort.Direction.ASC, "name"));
-        return Result.success(customerRepository.findAll(pageable));
+        if(!search) {
+            return Result.success(customerRepository.findAll(pageable));
+        }else{
+            ExampleMatcher matcher = ExampleMatcher.matching()
+                    .withMatcher("name", ExampleMatcher.GenericPropertyMatchers.startsWith())
+                    .withMatcher("address" ,ExampleMatcher.GenericPropertyMatchers.contains())
+                    .withMatcher("source" ,ExampleMatcher.GenericPropertyMatchers.exact())
+                    .withMatcher("industry" ,ExampleMatcher.GenericPropertyMatchers.exact())
+                    .withMatcher("level" ,ExampleMatcher.GenericPropertyMatchers.exact());
+            Example<Customer> sample = Example.of(searchParam, matcher);
+            return Result.success(customerRepository.findAll(sample, pageable));
+        }
     }
 
     @Override
     public Result getCustomerIndustry() {
         return Result.success(customerMapper.getCustomerIndustry());
+    }
+
+    @Override
+    public Result addCustomerIndustry(CustomerIndustry customerIndustry) {
+        String name = customerIndustry.getName();
+        CustomerIndustry newIndustry = customerMapper.getCustomerIndustryByName(name);
+
+        if(newIndustry!=null)
+            return Result.success(name);
+
+        customerMapper.addCustomerIndustry(name);
+        return Result.success(name);
     }
 
     @Override

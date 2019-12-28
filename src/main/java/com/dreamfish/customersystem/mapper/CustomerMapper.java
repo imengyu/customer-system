@@ -2,10 +2,7 @@ package com.dreamfish.customersystem.mapper;
 
 import com.dreamfish.customersystem.entity.Customer;
 import com.dreamfish.customersystem.entity.CustomerIndustry;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -20,6 +17,12 @@ public interface CustomerMapper {
 
     @Select("SELECT * FROM t_industry WHERE 1 LIMIT 32")
     List<CustomerIndustry> getCustomerIndustry();
+
+    @Select("SELECT * FROM t_industry WHERE name = #{name}")
+    CustomerIndustry getCustomerIndustryByName(@Param("name") String name);
+
+    @Insert("INSERT INTO t_industry(name) VALUES(#{name})")
+    void addCustomerIndustry(@Param("name") String name);
 
     @Delete("Delete FROM t_customers WHERE id = #{id}")
     void deleteCustomerById(@Param("id")Integer id);
